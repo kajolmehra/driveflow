@@ -1,16 +1,23 @@
 # User flows
 
 ```mermaid
-flowchart LR
+flowchart TB
     Visitor[Browse courses and services] --> Lead[Register interest]
     Lead --> Verify[Verify email / OTP]
     Verify --> Select[Choose course, city, and slot]
     Select --> Enroll[Submit enrollment]
-    Enroll --> School[School accepts or rejects]
-    School --> Learner[Track progress and feedback]
-    Vendor[Vendor] --> Booking[Review service booking]
+    Enroll --> Decision{School / vendor decision}
+    Decision -->|Accepted| Fulfil[Deliver learning or service]
+    Decision -->|Rejected| Amend[Show next action]
+    Amend --> Select
+    Fulfil --> Progress[Track progress / booking status]
+    Fulfil --> Invoice[Generate invoice record]
+    Vendor[Vendor workspace] --> Booking[Review service booking]
     Booking --> Status[Confirm, complete, or cancel]
     Status --> Settlement[Apply commission and payout state]
+    Invoice --> Settlement
+    Admin[Admin workspace] --> Rules[Configure prices and commission]
+    Rules --> Settlement
 ```
 
 ## Commission and payout lifecycle

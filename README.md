@@ -34,18 +34,41 @@ Driveflow brings learner enrollment, driving-school operations, vendor services,
 | Realtime UX | Live dashboard snapshots, notifications, and event-driven UI updates |
 | Reporting | PDF invoices, commission summaries, payout history, and operational exports |
 
-## Representative flow
+## Education and settlement flow
+
+Driveflow coordinates three connected journeys: a learner chooses and completes an enrollment, schools or vendors fulfil the work, and the platform records the commercial outcome for agents and administrators.
 
 ```mermaid
-flowchart LR
-    Learner[Discover course or service] --> Signup[Register + verify OTP]
-    Signup --> Enroll[Select city, course, slot]
-    Enroll --> Pay[Confirm enrollment / booking]
-    Pay --> Progress[Track progress or booking status]
-    School[Driving school] --> Manage[Manage students, vehicles, slots]
-    Agent[Agent] --> Commission[Review commissions]
-    Admin[Admin] --> Rules[Configure prices, commissions, payouts]
+flowchart TB
+    Visitor[Browse course or service] --> Location[Resolve city and availability]
+    Location --> Signup[Register + verify OTP]
+    Signup --> Enroll[Select course, slot, and preferences]
+    Enroll --> Review{School / vendor review}
+    Review -->|Accepted| Fulfil[Deliver course or service]
+    Review -->|Needs changes| Enroll
+    Fulfil --> Progress[Track progress or booking status]
+    Fulfil --> Invoice[Create invoice / commercial record]
+
+    subgraph OPERATIONS[School and vendor operations]
+        School[Manage students, vehicles, schedules]
+        Vendor[Manage services, bookings, status]
+    end
+
+    subgraph COMMERCIAL[Commission and payout control]
+        Rules[Configure price and commission rules]
+        Ledger[Calculate eligible balance]
+        Payout[Review payout and invoice]
+        Rules --> Ledger --> Payout
+    end
+
+    School --> Fulfil
+    Vendor --> Fulfil
+    Invoice --> Ledger
+    Admin[Admin dashboard] --> Rules
+    Admin --> Live[Monitor live notifications]
 ```
+
+**Outcome:** every learner or booking moves from discovery to fulfilment, progress, and a traceable commercial record.
 
 ## Technical stack
 
