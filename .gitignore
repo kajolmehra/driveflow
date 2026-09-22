@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+node_modules/
+vendor/
+storage/*.key
+storage/app/*
+public/build/
+dist/
+coverage/
+*.log
+assets/screenshots/raw/
